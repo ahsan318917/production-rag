@@ -44,4 +44,10 @@ CHUNK_SIZE = 500
 
 CHUNK_OVERLAP = 100
 
+# -----------------------------
+# Retrieval
+# -----------------------------
+
 TOP_K = 5
+
+MIN_SIMILARITY = 0.60

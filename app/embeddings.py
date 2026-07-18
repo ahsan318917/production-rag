@@ -1,35 +1,52 @@
-from ollama import embed
+import ollama
 
 from config import EMBED_MODEL
 
 
-def generate_embedding(text: str):
-    """
-    Generate embedding for a single text.
-    """
-
-    response = embed(
-        model=EMBED_MODEL,
-        input=text
-    )
-
-    return response["embeddings"][0]
-
-
 def generate_embeddings(texts):
     """
-    Generate embeddings for multiple texts in one Ollama request.
+    Generate embeddings using Ollama.
+
+    Accepts:
+        - A single string
+        - A list of strings
+
+    Returns:
+        - A single embedding (list[float]) if input is a string
+        - A list of embeddings if input is a list
     """
 
-    print(f"Generating embeddings for {len(texts)} chunks...")
+    # -------------------------------------
+    # Single Query
+    # -------------------------------------
 
-    response = embed(
-        model=EMBED_MODEL,
-        input=texts
-    )
+    if isinstance(texts, str):
 
-    embeddings = response["embeddings"]
+        response = ollama.embed(
+            model=EMBED_MODEL,
+            input=texts
+        )
 
-    print("Embeddings generated successfully.")
+        return response["embeddings"][0]
 
-    return embeddings
+    # -------------------------------------
+    # Multiple Chunks
+    # -------------------------------------
+
+    elif isinstance(texts, list):
+
+        print(f"Generating embeddings for {len(texts)} chunks...")
+
+        response = ollama.embed(
+            model=EMBED_MODEL,
+            input=texts
+        )
+
+        print("Embeddings generated successfully.")
+
+        return response["embeddings"]
+
+    else:
+        raise TypeError(
+            "Input must be a string or a list of strings."
+        )

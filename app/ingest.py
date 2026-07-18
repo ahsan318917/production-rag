@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import datetime
 
 from langchain_community.document_loaders import (
     TextLoader,
@@ -6,14 +7,21 @@ from langchain_community.document_loaders import (
     Docx2txtLoader,
 )
 
-from config import DATA_DIR
+from config import (
+    DATA_DIR,
+    EMBED_MODEL,
+)
+
 from utils import chunk_documents
 from embeddings import generate_embeddings
+
 from faiss_store import (
     create_index,
     save_index,
     save_chunks,
+    save_metadata,
 )
+
 
 # -------------------------------------------------
 # Supported File Types
@@ -51,16 +59,25 @@ def load_document(file_path: Path):
     suffix = file_path.suffix.lower()
 
     if suffix == ".txt":
-        loader = TextLoader(str(file_path), encoding="utf-8")
+        loader = TextLoader(
+            str(file_path),
+            encoding="utf-8"
+        )
 
     elif suffix == ".pdf":
-        loader = PyPDFLoader(str(file_path))
+        loader = PyPDFLoader(
+            str(file_path)
+        )
 
     elif suffix == ".docx":
-        loader = Docx2txtLoader(str(file_path))
+        loader = Docx2txtLoader(
+            str(file_path)
+        )
 
     else:
-        raise ValueError(f"Unsupported file type: {suffix}")
+        raise ValueError(
+            f"Unsupported file type: {suffix}"
+        )
 
     return loader.load()
 
@@ -82,7 +99,7 @@ def main():
     all_chunks = []
 
     # -------------------------------------
-    # Process Every Document
+    # Process Documents
     # -------------------------------------
 
     for document_path in document_paths:
@@ -110,7 +127,7 @@ def main():
             print(e)
 
     # -------------------------------------
-    # Summary
+    # Chunk Summary
     # -------------------------------------
 
     print("\n" + "=" * 60)
@@ -164,7 +181,23 @@ def main():
     print(embeddings[0][:10])
 
     # -------------------------------------
-    # Create FAISS
+    # Create Metadata
+    # -------------------------------------
+
+    metadata = {
+
+        "embedding_model": EMBED_MODEL,
+
+        "dimension": len(embeddings[0]),
+
+        "num_vectors": len(embeddings),
+
+        "created_at": datetime.now().isoformat()
+
+    }
+
+    # -------------------------------------
+    # Create FAISS Index
     # -------------------------------------
 
     print("\nCreating FAISS index...")
@@ -174,16 +207,17 @@ def main():
     print("FAISS index created.")
 
     # -------------------------------------
-    # Save
+    # Save Vector Store
     # -------------------------------------
 
     print("\nSaving FAISS index...")
-
     save_index(index)
 
     print("Saving chunks...")
-
     save_chunks(all_chunks)
+
+    print("Saving metadata...")
+    save_metadata(metadata)
 
     print("\nVector Store Saved Successfully!")
 
