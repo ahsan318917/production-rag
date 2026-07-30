@@ -1,0 +1,60 @@
+    0: \x80 PROTO      4
+    2: \x95 FRAME      675
+   11: ]    EMPTY_LIST
+   12: \x94 MEMOIZE    (as 0)
+   13: \x8c SHORT_BINUNICODE 'langchain_core.documents.base'
+   44: \x94 MEMOIZE    (as 1)
+   45: \x8c SHORT_BINUNICODE 'Document'
+   55: \x94 MEMOIZE    (as 2)
+   56: \x93 STACK_GLOBAL
+   57: \x94 MEMOIZE    (as 3)
+   58: )    EMPTY_TUPLE
+   59: \x81 NEWOBJ
+   60: \x94 MEMOIZE    (as 4)
+   61: }    EMPTY_DICT
+   62: \x94 MEMOIZE    (as 5)
+   63: (    MARK
+   64: \x8c     SHORT_BINUNICODE '__dict__'
+   74: \x94     MEMOIZE    (as 6)
+   75: }        EMPTY_DICT
+   76: \x94     MEMOIZE    (as 7)
+   77: (        MARK
+   78: \x8c         SHORT_BINUNICODE 'id'
+   82: \x94         MEMOIZE    (as 8)
+   83: N            NONE
+   84: \x8c         SHORT_BINUNICODE 'metadata'
+   94: \x94         MEMOIZE    (as 9)
+   95: }            EMPTY_DICT
+   96: \x94         MEMOIZE    (as 10)
+   97: \x8c         SHORT_BINUNICODE 'source'
+  105: \x94         MEMOIZE    (as 11)
+  106: \x8c         SHORT_BINUNICODE 'D:\\Ahsan_Projects\\AI-Learning\\production-rag\\data\\documents\\bank_policy.txt'
+  183: \x94         MEMOIZE    (as 12)
+  184: s            SETITEM
+  185: \x8c         SHORT_BINUNICODE 'page_content'
+  199: \x94         MEMOIZE    (as 13)
+  200: X            BINUNICODE 'ABC Bank Customer Policy\n\nSavings Account\n\nATM withdrawal limit is 60,000 PKR\n\nThe minimum balance required for a savings account is 5,000 PKR.\n\nThe annual maintenance fee is 1,000 PKR.\n\nCustomers are encouraged to update their contact information regularly to receive important account notifications.\n\nInternational debit card transactions are enabled only after customer verification.'
+  591: \x94         MEMOIZE    (as 14)
+  592: \x8c         SHORT_BINUNICODE 'type'
+  598: \x94         MEMOIZE    (as 15)
+  599: h            BINGET     2
+  601: u            SETITEMS   (MARK at 77)
+  602: \x8c     SHORT_BINUNICODE '__pydantic_extra__'
+  622: \x94     MEMOIZE    (as 16)
+  623: N        NONE
+  624: \x8c     SHORT_BINUNICODE '__pydantic_fields_set__'
+  649: \x94     MEMOIZE    (as 17)
+  650: \x8f     EMPTY_SET
+  651: \x94     MEMOIZE    (as 18)
+  652: (        MARK
+  653: h            BINGET     9
+  655: h            BINGET     13
+  657: \x90         ADDITEMS   (MARK at 652)
+  658: \x8c     SHORT_BINUNICODE '__pydantic_private__'
+  680: \x94     MEMOIZE    (as 19)
+  681: N        NONE
+  682: u        SETITEMS   (MARK at 63)
+  683: b    BUILD
+  684: a    APPEND
+  685: .    STOP
+highest protocol among opcodes = 4

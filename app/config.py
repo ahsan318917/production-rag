@@ -28,6 +28,9 @@ METADATA_FILE = VECTOR_STORE_DIR / "metadata.pkl"
 
 HASHES_FILE = VECTOR_STORE_DIR / "hashes.pkl"
 
+# NEW: Stores the FAISS vector IDs for every chunk
+VECTOR_IDS_FILE = VECTOR_STORE_DIR / "vector_ids.pkl"
+
 # -----------------------------
 # Models
 # -----------------------------
@@ -51,3 +54,11 @@ CHUNK_OVERLAP = 100
 TOP_K = 5
 
 MIN_SIMILARITY = 0.60
+
+RERANK_TOP_K = 3
+
+MIN_RERANK_SCORE = 0.30
+
+BM25_TOP_K = 5
+
+FAISS_TOP_K = 5

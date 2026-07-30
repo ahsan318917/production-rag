@@ -1,0 +1,27 @@
+ABC Bank Fixed Deposit Policy
+
+Overview
+ABC Bank offers fixed deposits from 1 month to 5 years.
+
+Eligibility
+- Individual and joint accounts
+- Valid CNIC
+- Minimum age 18
+
+Deposit Amount
+Minimum: 50,000 PKR
+Maximum: No limit
+
+Profit Rates
+1 Month: 10%
+3 Months: 11%
+6 Months: 12%
+1 Year: 13%
+3 Years: 13.5%
+5 Years: 14%
+
+Premature Encashment
+Early withdrawal is allowed with a reduced profit rate.
+
+Nomination
+Customers may nominate one beneficiary.

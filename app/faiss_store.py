@@ -1,4 +1,3 @@
-import os
 import pickle
 
 import faiss
@@ -11,41 +10,106 @@ from config import (
     HASHES_FILE,
 )
 
-
 # -------------------------------------------------
-# Create FAISS Index
+# Create Empty Index
 # -------------------------------------------------
 
-def create_index(embeddings):
+def create_index(dimension: int):
     """
-    Create a FAISS index from embeddings.
+    Create an empty FAISS IndexIDMap2 using
+    cosine similarity (Inner Product).
     """
 
-    vectors = np.array(
-    embeddings,
-    dtype=np.float32
-)
+    base_index = faiss.IndexFlatIP(dimension)
 
-    # Normalize to unit length
-    faiss.normalize_L2(vectors)
-
-    dimension = vectors.shape[1]
-
-    index = faiss.IndexFlatIP(dimension)
-
-    index.add(vectors)
+    index = faiss.IndexIDMap2(base_index)
 
     return index
 
 
 # -------------------------------------------------
-# Save / Load FAISS Index
+# Add Vectors
+# -------------------------------------------------
+
+def add_vectors(index, embeddings, vector_ids):
+    """
+    Add vectors with explicit IDs.
+    """
+
+    vectors = np.asarray(
+        embeddings,
+        dtype=np.float32
+    )
+
+    faiss.normalize_L2(vectors)
+
+    ids = np.asarray(
+        vector_ids,
+        dtype=np.int64
+    )
+
+    index.add_with_ids(
+        vectors,
+        ids
+    )
+
+    return index
+
+
+# -------------------------------------------------
+# Remove Vectors
+# -------------------------------------------------
+
+def remove_vectors(index, vector_ids):
+    """
+    Remove vectors by ID.
+    """
+
+    if len(vector_ids) == 0:
+        return index
+
+    ids = np.asarray(
+        vector_ids,
+        dtype=np.int64
+    )
+
+    index.remove_ids(ids)
+
+    return index
+
+
+# -------------------------------------------------
+# Search Index
+# -------------------------------------------------
+
+def search(index, query_embedding, top_k):
+    """
+    Search using cosine similarity.
+    Returns:
+        scores,
+        vector_ids
+    """
+
+    query = np.asarray(
+        [query_embedding],
+        dtype=np.float32
+    )
+
+    faiss.normalize_L2(query)
+
+    scores, ids = index.search(
+        query,
+        top_k
+    )
+
+    return scores[0], ids[0]
+
+
+# -------------------------------------------------
+# Save / Load Index
 # -------------------------------------------------
 
 def save_index(index):
-    """
-    Save FAISS index to disk.
-    """
 
     faiss.write_index(
         index,
@@ -54,14 +118,49 @@ def save_index(index):
 
 
 def load_index():
-    """
-    Load FAISS index from disk.
-    """
 
     if not FAISS_INDEX.exists():
-        raise FileNotFoundError("FAISS index not found.")
 
-    return faiss.read_index(str(FAISS_INDEX))
+        raise FileNotFoundError(
+            "FAISS index not found."
+        )
+
+    return faiss.read_index(
+        str(FAISS_INDEX)
+    )
+
+
+# -------------------------------------------------
+# Vector Utilities
+# -------------------------------------------------
+
+def vector_count(index):
+    """
+    Number of vectors stored.
+    """
+
+    return index.ntotal
+
+
+def allocate_vector_ids(metadata, count):
+    """
+    Allocate unique vector IDs.
+
+    Updates metadata["next_vector_id"].
+    """
+
+    start = metadata["next_vector_id"]
+
+    ids = list(
+        range(
+            start,
+            start + count
+        )
+    )
+
+    metadata["next_vector_id"] += count
+
+    return ids
 
 
 # -------------------------------------------------
@@ -69,24 +168,21 @@ def load_index():
 # -------------------------------------------------
 
 def save_chunks(chunks):
-    """
-    Save LangChain document chunks.
-    """
 
-    with open(CHUNKS_FILE, "wb") as file:
-        pickle.dump(chunks, file)
+    with open(CHUNKS_FILE, "wb") as f:
+
+        pickle.dump(chunks, f)
 
 
 def load_chunks():
-    """
-    Load LangChain document chunks.
-    """
 
     if not CHUNKS_FILE.exists():
-        raise FileNotFoundError("Chunks file not found.")
 
-    with open(CHUNKS_FILE, "rb") as file:
-        return pickle.load(file)
+        return []
+
+    with open(CHUNKS_FILE, "rb") as f:
+
+        return pickle.load(f)
 
 
 # -------------------------------------------------
@@ -94,49 +190,52 @@ def load_chunks():
 # -------------------------------------------------
 
 def save_metadata(metadata):
-    """
-    Save vector store metadata.
-    """
 
-    with open(METADATA_FILE, "wb") as file:
-        pickle.dump(metadata, file)
+    with open(METADATA_FILE, "wb") as f:
+
+        pickle.dump(metadata, f)
 
 
 def load_metadata():
-    """
-    Load vector store metadata.
-    """
 
     if not METADATA_FILE.exists():
-        raise FileNotFoundError("Metadata file not found.")
 
-    with open(METADATA_FILE, "rb") as file:
-        return pickle.load(file)
+        return {
+
+            "embedding_model": None,
+            "dimension": None,
+            "num_vectors": 0,
+            "next_vector_id": 0,
+            "created_at": None,
+            "updated_at": None,
+
+        }
+
+    with open(METADATA_FILE, "rb") as f:
+
+        return pickle.load(f)
 
 
 # -------------------------------------------------
-# Save / Load Document Hashes
+# Save / Load Hashes
 # -------------------------------------------------
 
 def save_hashes(hashes):
-    """
-    Save document hashes.
-    """
 
-    with open(HASHES_FILE, "wb") as file:
-        pickle.dump(hashes, file)
+    with open(HASHES_FILE, "wb") as f:
+
+        pickle.dump(hashes, f)
 
 
 def load_hashes():
-    """
-    Load document hashes.
-    """
 
     if not HASHES_FILE.exists():
-        raise FileNotFoundError("Hashes file not found.")
 
-    with open(HASHES_FILE, "rb") as file:
-        return pickle.load(file)
+        return {}
+
+    with open(HASHES_FILE, "rb") as f:
+
+        return pickle.load(f)
 
 
 # -------------------------------------------------
@@ -145,14 +244,10 @@ def load_hashes():
 
 def index_exists():
     """
-    Check whether a complete vector store exists.
+    Check whether the FAISS index exists.
     """
 
-    return (
-        FAISS_INDEX.exists()
-        and CHUNKS_FILE.exists()
-        and METADATA_FILE.exists()
-    )
+    return FAISS_INDEX.exists()
 
 
 def delete_index():
@@ -160,16 +255,15 @@ def delete_index():
     Delete the entire vector store.
     """
 
-    files = [
+    for file in (
         FAISS_INDEX,
         CHUNKS_FILE,
         METADATA_FILE,
         HASHES_FILE,
-    ]
-
-    for file in files:
+    ):
 
         if file.exists():
+
             file.unlink()
 
     print("Vector store deleted successfully.")

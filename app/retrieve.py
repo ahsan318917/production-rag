@@ -1,68 +1,35 @@
-import faiss
 import numpy as np
 
 from config import (
     TOP_K,
     MIN_SIMILARITY,
 )
+
 from embeddings import generate_embeddings
+
 from faiss_store import (
     load_index,
     load_chunks,
+    search,
 )
 
-# -------------------------------------------------
-# Retrieval Settings
-# -------------------------------------------------
 
-MIN_SIMILARITY = 0.60
-
-# -------------------------------------------------
-# Search FAISS Index
-# -------------------------------------------------
-
-def search_index(query_embedding, top_k=TOP_K):
-    """
-    Search the FAISS index using cosine similarity.
-
-    Returns:
-        scores : Cosine similarity scores
-        indices: Matching chunk indices
-    """
-
-    index = load_index()
-
-    query_vector = np.array(
-        [query_embedding],
-        dtype=np.float32
-    )
-
-    # Normalize query vector
-    faiss.normalize_L2(query_vector)
-
-    scores, indices = index.search(
-        query_vector,
-        top_k
-    )
-
-    return scores[0], indices[0]
-
-
-# -------------------------------------------------
+# =====================================================
 # Retrieve Relevant Chunks
-# -------------------------------------------------
+# =====================================================
 
-def retrieve(query, top_k=TOP_K):
+def retrieve(query: str, top_k: int = TOP_K):
     """
-    Retrieve the most relevant chunks.
+    Retrieve the most relevant chunks from FAISS.
 
     Returns:
-        [
-            {
-                "chunk": chunk,
-                "score": similarity_score
-            }
-        ]
+    [
+        {
+            "vector_id": int,
+            "score": float,
+            "chunk": Document
+        }
+    ]
     """
 
     print("=" * 60)
@@ -75,45 +42,62 @@ def retrieve(query, top_k=TOP_K):
 
     print("Embedding generated.")
 
-    print("\nSearching FAISS index...")
+    print("\nLoading FAISS index...")
 
-    scores, indices = search_index(
-        query_embedding,
-        top_k
+    index = load_index()
+
+    print("Searching index...")
+
+    scores, vector_ids = search(
+        index=index,
+        query_embedding=query_embedding,
+        top_k=top_k,
     )
 
     chunks = load_chunks()
 
-    retrieved_chunks = []
+    retrieved = []
 
-    for score, idx in zip(scores, indices):
+    for score, vector_id in zip(scores, vector_ids):
 
-        if idx == -1:
+        # Invalid FAISS result
+        if vector_id == -1:
             continue
 
-        # Filter weak matches
+        # Ignore weak matches
         if score < MIN_SIMILARITY:
             continue
 
-        retrieved_chunks.append(
+        # Vector removed from storage
+        if vector_id not in chunks:
+            continue
+
+        retrieved.append(
             {
-                "chunk": chunks[idx],
-                "score": float(score)
+                "vector_id": int(vector_id),
+                "score": float(score),
+                "chunk": chunks[vector_id],
             }
         )
 
-    print(f"Retrieved {len(retrieved_chunks)} relevant chunk(s).\n")
+    # Highest similarity first
+    retrieved.sort(
+        key=lambda x: x["score"],
+        reverse=True,
+    )
 
-    return retrieved_chunks
+    print(f"\nRetrieved {len(retrieved)} relevant chunk(s).")
+
+    return retrieved
 
 
-# -------------------------------------------------
+# =====================================================
 # Display Results
-# -------------------------------------------------
+# =====================================================
 
 def display_results(results):
 
-    print("=" * 60)
+    print("\n" + "=" * 60)
     print("Retrieved Chunks")
     print("=" * 60)
 
@@ -121,36 +105,49 @@ def display_results(results):
         print("No relevant chunks found.")
         return
 
-    for i, result in enumerate(results, start=1):
+    for rank, result in enumerate(results, start=1):
 
         chunk = result["chunk"]
+        metadata = chunk.metadata
+
+        print("\n" + "-" * 60)
+        print(f"Rank      : {rank}")
+        print(f"Vector ID : {result['vector_id']}")
+        print(f"Similarity: {result['score']:.4f}")
+
+        print(
+            f"Source    : {metadata.get('source', 'Unknown')}"
+        )
+
+        print(
+            f"Chunk No. : {metadata.get('chunk', metadata.get('chunk_id', 'N/A'))}"
+        )
 
         print("-" * 60)
-        print(f"Rank {i}")
-        print("-" * 60)
-
-        print(f"Similarity : {result['score']:.4f}")
-
-        print("\nContent:\n")
 
         print(chunk.page_content)
 
-        print("\nMetadata:")
-
-        print(chunk.metadata)
-
-        print()
+    print("\n" + "=" * 60)
 
 
-# -------------------------------------------------
-# Main (Testing)
-# -------------------------------------------------
+# =====================================================
+# Interactive CLI
+# =====================================================
 
 def main():
 
+    print("=" * 60)
+    print("Production RAG Retriever")
+    print("=" * 60)
+
     while True:
 
-        query = input("\nAsk a question (type 'exit' to quit): ")
+        query = input(
+            "\nAsk a question (type 'exit' to quit): "
+        ).strip()
+
+        if not query:
+            continue
 
         if query.lower() == "exit":
             break
@@ -160,9 +157,9 @@ def main():
         display_results(results)
 
 
-# -------------------------------------------------
+# =====================================================
 # Entry Point
-# -------------------------------------------------
+# =====================================================
 
 if __name__ == "__main__":
     main()
