@@ -1,4 +1,5 @@
 import json
+import re
 
 from ollama import chat
 
@@ -25,11 +26,42 @@ def _parse_json_safe(text):
         return None
 
 
+def _looks_multitask(query: str) -> bool:
+    """Heuristically detect obvious multi-intent queries before calling the LLM."""
+    if not query:
+        return False
+
+    lowered = query.lower()
+
+    markers = [
+        " and ",
+        " also ",
+        " as well as ",
+        " along with ",
+        " besides ",
+        " both ",
+        " all ",
+        " compare ",
+        " difference between ",
+    ]
+
+    if re.search(r"\?\s*\?", query):
+        return True
+
+    if any(marker in lowered for marker in markers):
+        return True
+
+    if "," in query and query.count(",") >= 1:
+        return True
+
+    return False
+
+
 def decompose_query(query: str):
     """
-    Split a query into sub-queries when it contains multiple independent
-    information needs. If decomposition is unnecessary or fails, return the
-    original query as a single-item list.
+    Only split a query when it clearly contains multiple independent information needs.
+    If decomposition is unnecessary, or parsing fails, return the original query as a
+    single-item list.
     """
 
     if not query or not query.strip():
@@ -37,18 +69,18 @@ def decompose_query(query: str):
 
     cleaned_query = query.strip()
 
+    if not _looks_multitask(cleaned_query):
+        return [cleaned_query]
+
     prompt = f"""
-You are a query decomposition assistant.
-
-Your job is only to split the user's query into sub-queries when it contains multiple independent information needs.
-
-Rules:
-- Never answer the question.
-- Never retrieve information.
-- Only split the query if there are multiple independent information needs.
-- Preserve the user's wording as much as possible.
-- Do not rewrite unless necessary.
-- Return only valid JSON.
+You are NOT answering the question.
+You are NOT improving the question.
+You are NOT expanding the question.
+You are ONLY deciding whether the query contains multiple independent questions.
+If there is only one information need, return it unchanged.
+If decomposition is not required, do not change wording except for trivial whitespace cleanup.
+Do not invent calculations, assumptions, missing entities, or follow-up questions.
+Return only valid JSON.
 
 User query:
 {cleaned_query}
@@ -69,8 +101,9 @@ Expected JSON format:
                 {
                     "role": "system",
                     "content": (
-                        "You split complex user questions into simpler sub-queries. "
-                        "Return only valid JSON with a 'sub_queries' array."
+                        "You decide whether a user query contains multiple independent information needs. "
+                        "Return only valid JSON with a 'sub_queries' array. "
+                        "If there is only one information need, return the original query unchanged."
                     ),
                 },
                 {
@@ -96,7 +129,11 @@ Expected JSON format:
                 ]
 
                 if cleaned_sub_queries:
-                    return cleaned_sub_queries
+                    if len(cleaned_sub_queries) == 1 and cleaned_sub_queries[0] == cleaned_query:
+                        return cleaned_sub_queries
+
+                    if len(cleaned_sub_queries) >= 2:
+                        return cleaned_sub_queries
 
     except Exception:
         pass

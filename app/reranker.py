@@ -11,35 +11,48 @@ MODEL_CANDIDATES = [
     "cross-encoder/ms-marco-MiniLM-L-6-v2",
 ]
 
-_reranker = None
+cross_encoder = None
 _reranker_model_name = None
 
 
 def _load_reranker():
-    global _reranker, _reranker_model_name
+    global cross_encoder, _reranker_model_name
 
-    if _reranker is not None:
-        return _reranker
+    if cross_encoder is not None:
+        return cross_encoder
 
     last_error = None
 
     for model_name in MODEL_CANDIDATES:
         try:
-            _reranker = CrossEncoder(model_name)
+            cross_encoder = CrossEncoder(model_name)
             _reranker_model_name = model_name
             break
         except Exception as exc:
             last_error = exc
             continue
 
-    if _reranker is None:
+    if cross_encoder is None:
         raise RuntimeError(
             "Failed to load a local reranker model. "
             "Install sentence-transformers and ensure at least one of the following models is available: "
             f"{MODEL_CANDIDATES}."
         ) from last_error
 
-    return _reranker
+    return cross_encoder
+
+
+def score_pairs(query, texts):
+    """Score a query against a list of candidate texts using the shared reranker model."""
+    if not query or not texts:
+        return []
+
+    reranker = _load_reranker()
+
+    pairs = [(query, text) for text in texts]
+    scores = reranker.predict(pairs)
+
+    return [float(score) for score in scores]
 
 
 def rerank(query, retrieved_chunks, top_n: int = RERANK_TOP_K):
@@ -53,12 +66,8 @@ def rerank(query, retrieved_chunks, top_n: int = RERANK_TOP_K):
 
     reranker = _load_reranker()
 
-    pairs = [
-        (query, chunk["chunk"].page_content)
-        for chunk in retrieved_chunks
-    ]
-
-    scores = reranker.predict(pairs)
+    texts = [chunk["chunk"].page_content for chunk in retrieved_chunks]
+    scores = score_pairs(query, texts)
 
     results = []
 

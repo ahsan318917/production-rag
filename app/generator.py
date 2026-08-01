@@ -134,6 +134,12 @@ I don't have enough information to answer that.
 
 14. Keep answers concise.
 
+15. Answer only the user's question. Do not volunteer extra information.
+
+16. Do not summarize nearby sections or include unrelated facts.
+
+17. Only include the information explicitly requested by the user.
+
 --------------------------------------------------
 CONVERSATION HISTORY
 --------------------------------------------------

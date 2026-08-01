@@ -8,6 +8,7 @@ from generator import (
 from history_retriever import rewrite_query
 from query_decomposer import decompose_query
 from reranker import rerank
+from context_compressor import compress_context
 
 from memory import (
     ConversationMemory,
@@ -140,7 +141,12 @@ def main():
 
         print(f"\nKeeping top {len(reranked_chunks)} chunks.")
 
-        retrieved_chunks = reranked_chunks
+        compressed_chunks = compress_context(
+            query=query,
+            retrieved_chunks=reranked_chunks,
+        )
+
+        retrieved_chunks = compressed_chunks
 
         # -----------------------------------------
         # Generate Response
