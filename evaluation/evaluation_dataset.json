@@ -1,0 +1,215 @@
+[
+    {
+        "question": "What is the minimum age required for a credit card?",
+        "expected_answer": "The minimum age required is 21 years.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What documents are required to apply for a credit card?",
+        "expected_answer": "Applicants must provide a valid CNIC.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What is the minimum monthly income required for a credit card?",
+        "expected_answer": "The minimum monthly income required is 60,000 PKR.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What credit card types does ABC Bank offer?",
+        "expected_answer": "ABC Bank offers Classic, Gold and Platinum cards.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What is the maximum credit limit for a Classic card?",
+        "expected_answer": "The maximum credit limit for a Classic card is 300,000 PKR.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What is the maximum credit limit for a Gold card?",
+        "expected_answer": "The maximum credit limit for a Gold card is 1,000,000 PKR.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What is the maximum credit limit for a Platinum card?",
+        "expected_answer": "The maximum credit limit for a Platinum card is 3,000,000 PKR.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What is the late payment fee for a credit card?",
+        "expected_answer": "The late payment fee is 2,000 PKR.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "How are reward points earned?",
+        "expected_answer": "Customers earn 1 point for every 100 PKR spent.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "When do reward points expire?",
+        "expected_answer": "Reward points expire after 24 months.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What should a customer do if a credit card is lost?",
+        "expected_answer": "Customers should report lost cards immediately.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+    {
+        "question": "What percentage of the credit limit can be taken as a cash advance?",
+        "expected_answer": "Customers can take a cash advance of up to 40% of the credit limit.",
+        "expected_source": "credit_card_policy.docx",
+        "category": "credit_card"
+    },
+
+    {
+        "question": "What is the minimum deposit amount for a fixed deposit?",
+        "expected_answer": "The minimum deposit amount is 50,000 PKR.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "Is there a maximum deposit amount for a fixed deposit?",
+        "expected_answer": "No. There is no maximum deposit amount.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "What is the profit rate for a one-month fixed deposit?",
+        "expected_answer": "The profit rate is 10%.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "What is the profit rate for a three-month fixed deposit?",
+        "expected_answer": "The profit rate is 11%.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "What is the profit rate for a six-month fixed deposit?",
+        "expected_answer": "The profit rate is 12%.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "What is the profit rate for a one-year fixed deposit?",
+        "expected_answer": "The profit rate is 13%.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "What is the profit rate for a three-year fixed deposit?",
+        "expected_answer": "The profit rate is 13.5%.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "What is the profit rate for a five-year fixed deposit?",
+        "expected_answer": "The profit rate is 14%.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "Can customers withdraw their fixed deposit early?",
+        "expected_answer": "Yes. Early withdrawal is allowed with a reduced profit rate.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+    {
+        "question": "Can customers nominate a beneficiary for a fixed deposit?",
+        "expected_answer": "Yes. Customers may nominate one beneficiary.",
+        "expected_source": "fixed_deposit_policy.txt",
+        "category": "fixed_deposit"
+    },
+
+    {
+        "question": "How do customers register for internet banking?",
+        "expected_answer": "Customers register using their account number, CNIC and OTP.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+    {
+        "question": "Does internet banking support biometric authentication?",
+        "expected_answer": "Yes. Optional biometric authentication is available.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+    {
+        "question": "What is the daily transfer limit for internet banking?",
+        "expected_answer": "The daily transfer limit is 1,000,000 PKR.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+    {
+        "question": "Are bill payments charged a service fee?",
+        "expected_answer": "No. Bill payments have no service charge.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+    {
+        "question": "What is required before transferring money to a new beneficiary?",
+        "expected_answer": "New beneficiaries require OTP verification before the first transfer.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+    {
+        "question": "What are the password requirements for internet banking?",
+        "expected_answer": "Passwords must be at least 8 characters long and include uppercase letters, lowercase letters, numbers and special characters.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+    {
+        "question": "What happens after five failed login attempts?",
+        "expected_answer": "The account is locked for 30 minutes after five failed login attempts.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+    {
+        "question": "What support channels are available for internet banking?",
+        "expected_answer": "ABC Bank provides 24/7 helpline and email support.",
+        "expected_source": "internet_banking_policy.pdf",
+        "category": "internet_banking"
+    },
+
+    {
+        "question": "Does ABC Bank offer student loans?",
+        "expected_answer": "I don't have enough information to answer that.",
+        "expected_source": null,
+        "category": "unsupported"
+    },
+    {
+        "question": "What is the interest rate on a home loan?",
+        "expected_answer": "I don't have enough information to answer that.",
+        "expected_source": null,
+        "category": "unsupported"
+    },
+    {
+        "question": "Can I apply for a business loan online?",
+        "expected_answer": "I don't have enough information to answer that.",
+        "expected_source": null,
+        "category": "unsupported"
+    },
+    {
+        "question": "What is the fee for replacing a lost credit card?",
+        "expected_answer": "I don't have enough information to answer that.",
+        "expected_source": null,
+        "category": "unsupported"
+    },
+    {
+        "question": "Can I open a fixed deposit account online?",
+        "expected_answer": "I don't have enough information to answer that.",
+        "expected_source": null,
+        "category": "unsupported"
+    }
+]

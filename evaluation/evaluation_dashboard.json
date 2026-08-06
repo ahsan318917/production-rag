@@ -1,0 +1,109 @@
+{
+  "top_failed_documents": {
+    "credit_card_policy.docx": 4,
+    "internet_banking_policy.pdf": 3
+  },
+  "top_failed_categories": {
+    "Dates": {
+      "total": 1,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "Fees": {
+      "total": 2,
+      "correct": 1,
+      "accuracy": 50.0
+    },
+    "Procedures": {
+      "total": 4,
+      "correct": 2,
+      "accuracy": 50.0
+    },
+    "Security": {
+      "total": 2,
+      "correct": 1,
+      "accuracy": 50.0
+    },
+    "Internet Banking": {
+      "total": 2,
+      "correct": 1,
+      "accuracy": 50.0
+    },
+    "Eligibility": {
+      "total": 5,
+      "correct": 4,
+      "accuracy": 80.0
+    },
+    "Credit Card": {
+      "total": 1,
+      "correct": 1,
+      "accuracy": 100.0
+    },
+    "Limits": {
+      "total": 6,
+      "correct": 6,
+      "accuracy": 100.0
+    },
+    "Rates": {
+      "total": 6,
+      "correct": 6,
+      "accuracy": 100.0
+    },
+    "Fixed Deposit": {
+      "total": 1,
+      "correct": 1,
+      "accuracy": 100.0
+    },
+    "Unsupported": {
+      "total": 5,
+      "correct": 5,
+      "accuracy": 100.0
+    }
+  },
+  "most_hallucinated_questions": [
+    "What is the minimum age required for a credit card?"
+  ],
+  "average_reranker_score": 0.8795,
+  "average_retrieval_score": 0.6571,
+  "most_common_failure_reason": "Retrieval Failure",
+  "latency_distributions": {
+    "retrieval": 0.5,
+    "reranker": 0.91,
+    "generation": 3.45,
+    "total": 5.75
+  },
+  "question_difficulty": [
+    {
+      "question": "When do reward points expire?",
+      "confidence": 0.7,
+      "correct": false
+    },
+    {
+      "question": "How are reward points earned?",
+      "confidence": 2.1,
+      "correct": false
+    },
+    {
+      "question": "Are bill payments charged a service fee?",
+      "confidence": 3.5,
+      "correct": false
+    },
+    {
+      "question": "What is required before transferring money to a new beneficiary?",
+      "confidence": 3.5,
+      "correct": false
+    },
+    {
+      "question": "What support channels are available for internet banking?",
+      "confidence": 13.6,
+      "correct": false
+    }
+  ],
+  "confidence_histogram": {
+    "0-20": 7,
+    "20-40": 0,
+    "40-60": 5,
+    "60-80": 1,
+    "80-100": 22
+  }
+}

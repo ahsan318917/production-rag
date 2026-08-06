@@ -1,0 +1,88 @@
+{
+  "total_questions": 35,
+  "pipeline_success_rate": 65.7,
+  "semantic_answer_accuracy": 80.0,
+  "exact_match_accuracy": 17.1,
+  "source_accuracy": 80.0,
+  "retrieval_accuracy": 65.7,
+  "hit_at_1": 86.7,
+  "hit_at_3": 86.7,
+  "mrr": 0.8667,
+  "faithfulness": 0.9714,
+  "answer_relevancy": 0.8711,
+  "context_precision": 0.7143,
+  "context_recall": 54.3,
+  "hallucination_rate": 2.9,
+  "unsupported_accuracy": 100.0,
+  "avg_pipeline_confidence": 66.0,
+  "avg_retrieval_latency": 0.5,
+  "avg_reranker_latency": 0.91,
+  "avg_generation_latency": 3.45,
+  "avg_total_latency": 5.75,
+  "category_accuracy": {
+    "Eligibility": {
+      "total": 5,
+      "correct": 4,
+      "accuracy": 80.0
+    },
+    "Credit Card": {
+      "total": 1,
+      "correct": 1,
+      "accuracy": 100.0
+    },
+    "Limits": {
+      "total": 6,
+      "correct": 6,
+      "accuracy": 100.0
+    },
+    "Fees": {
+      "total": 2,
+      "correct": 1,
+      "accuracy": 50.0
+    },
+    "Procedures": {
+      "total": 4,
+      "correct": 2,
+      "accuracy": 50.0
+    },
+    "Dates": {
+      "total": 1,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "Security": {
+      "total": 2,
+      "correct": 1,
+      "accuracy": 50.0
+    },
+    "Rates": {
+      "total": 6,
+      "correct": 6,
+      "accuracy": 100.0
+    },
+    "Fixed Deposit": {
+      "total": 1,
+      "correct": 1,
+      "accuracy": 100.0
+    },
+    "Internet Banking": {
+      "total": 2,
+      "correct": 1,
+      "accuracy": 50.0
+    },
+    "Unsupported": {
+      "total": 5,
+      "correct": 5,
+      "accuracy": 100.0
+    }
+  },
+  "top_failure_reasons": {
+    "Retrieval Failure": 4,
+    "Reranker Failure": 3,
+    "Hallucination": 1
+  },
+  "missed_documents": {
+    "credit_card_policy.docx": 4,
+    "internet_banking_policy.pdf": 3
+  }
+}

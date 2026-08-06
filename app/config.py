@@ -68,3 +68,12 @@ MIN_UNITS_FOR_COMPRESSION = 8
 BM25_TOP_K = 5
 
 FAISS_TOP_K = 5
+
+# -----------------------------
+# Evaluation Settings
+# -----------------------------
+
+ANSWER_SIMILARITY_THRESHOLD = 0.65
+
+CONTEXT_SIMILARITY_THRESHOLD = 0.65
+
